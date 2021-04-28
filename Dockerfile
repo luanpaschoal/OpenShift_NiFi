@@ -99,6 +99,6 @@ WORKDIR ${NIFI_HOME}
 #ENTRYPOINT ["sh", "../scripts/start.sh"]
 
 RUN mkdir nifi-1.11.4 && cp -a conf nifi-1.11.4/conf
-
+RUN chmod -R a+rwx nifi-1.11.4
 
 ENTRYPOINT ../scripts/start-openshift-nifi.sh
