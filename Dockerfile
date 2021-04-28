@@ -28,7 +28,6 @@ ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 USER root
 
 ADD sh/ ${NIFI_BASE_DIR}/scripts
-ADD start-patched.sh ${NIFI_BASE_DIR}/scripts
 RUN chmod -R a+x ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
