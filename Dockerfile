@@ -85,7 +85,10 @@ RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
 
 WORKDIR ${NIFI_HOME}
 
-#USER 1001
+RUN mkdir nifi-1.11.4 && cp -a conf nifi-1.11.4/conf
+RUN chmod -R a+rwx nifi-1.11.4
+
+USER nifi
 
 # Apply configuration and start NiFi
 #
@@ -98,7 +101,6 @@ WORKDIR ${NIFI_HOME}
 # https://docs.docker.com/engine/reference/builder/#exec-form-entrypoint-example
 #ENTRYPOINT ["sh", "../scripts/start.sh"]
 
-RUN mkdir nifi-1.11.4 && cp -a conf nifi-1.11.4/conf
-RUN chmod -R a+rwx nifi-1.11.4
+
 
 ENTRYPOINT ../scripts/start-openshift-nifi.sh
