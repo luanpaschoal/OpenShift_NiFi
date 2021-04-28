@@ -16,12 +16,12 @@
 #    limitations under the License.
 
 # Debug CT
-echo NiFi start.sh has started
+echo start.sh has started
 
 scripts_dir='/opt/nifi/scripts'
 
 [ -f "${scripts_dir}/common.sh" ] && . "${scripts_dir}/common.sh"
-
+echo Override JVM memory settings
 # Override JVM memory settings
 if [ ! -z "${NIFI_JVM_HEAP_INIT}" ]; then
     prop_replace 'java.arg.2'       "-Xms${NIFI_JVM_HEAP_INIT}" ${nifi_bootstrap_file}
@@ -34,14 +34,14 @@ fi
 if [ ! -z "${NIFI_JVM_DEBUGGER}" ]; then
     uncomment "java.arg.debug" ${nifi_bootstrap_file}
 fi
-
+echo Establish baseline properties
 # Establish baseline properties
 prop_replace 'nifi.web.http.port'               "${NIFI_WEB_HTTP_PORT:-8080}"
 prop_replace 'nifi.web.http.host'               "${NIFI_WEB_HTTP_HOST:-$HOSTNAME}"
 prop_replace 'nifi.remote.input.host'           "${NIFI_REMOTE_INPUT_HOST:-$HOSTNAME}"
 prop_replace 'nifi.remote.input.socket.port'    "${NIFI_REMOTE_INPUT_SOCKET_PORT:-10000}"
 prop_replace 'nifi.remote.input.secure'         'false'
-
+echo Set nifi-toolkit properties files and baseUrl
 # Set nifi-toolkit properties files and baseUrl
 "${scripts_dir}/toolkit.sh"
 prop_replace 'baseUrl' "http://${NIFI_WEB_HTTP_HOST:-$HOSTNAME}:${NIFI_WEB_HTTP_PORT:-8080}" ${nifi_toolkit_props_file}
@@ -59,6 +59,7 @@ prop_replace 'nifi.cluster.flow.election.max.candidates'    "${NIFI_ELECTION_MAX
 prop_replace 'nifi.web.proxy.context.path'                  "${NIFI_WEB_PROXY_CONTEXT_PATH:-}"
 
 # Set analytics properties
+echo Set analytics properties
 prop_replace 'nifi.analytics.predict.enabled'                   "${NIFI_ANALYTICS_PREDICT_ENABLED:-false}"
 prop_replace 'nifi.analytics.predict.interval'                  "${NIFI_ANALYTICS_PREDICT_INTERVAL:-3 mins}"
 prop_replace 'nifi.analytics.query.interval'                    "${NIFI_ANALYTICS_QUERY_INTERVAL:-5 mins}"
@@ -67,7 +68,7 @@ prop_replace 'nifi.analytics.connection.model.score.name'       "${NIFI_ANALYTIC
 prop_replace 'nifi.analytics.connection.model.score.threshold'  "${NIFI_ANALYTICS_MODEL_SCORE_THRESHOLD:-.90}"
 
 . "${scripts_dir}/update_cluster_state_management.sh"
-
+echo Check if we are secured or unsecured
 # Check if we are secured or unsecured
 case ${AUTH} in
     tls)
@@ -88,7 +89,7 @@ case ${AUTH} in
         fi
         ;;
 esac
-
+echo Continuously provide logs so that docker logs can    produce them
 # Continuously provide logs so that 'docker logs' can    produce them
 "${NIFI_HOME}/bin/nifi.sh" run &
 nifi_pid="$!"
