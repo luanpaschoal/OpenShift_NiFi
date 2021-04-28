@@ -81,9 +81,9 @@ RUN chmod -R a+x ${NIFI_BASE_DIR}/scripts/*.sh
 #
 #
 # Fix the permissions when running in OpenShift
-RUN chmod -R a+rwx /opt/nifi
+RUN chmod -R +rwx /opt/nifi
 RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
-#RUN chmod +x /opt/nifi/scripts/toolkit.sh
+RUN chmod +rwx /opt/nifi/nifi-current/conf/nifi.properties
 
 WORKDIR ${NIFI_HOME}
 
