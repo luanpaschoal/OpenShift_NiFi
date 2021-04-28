@@ -85,7 +85,7 @@ RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
 
 WORKDIR ${NIFI_HOME}
 
-USER 1001
+#USER 1001
 
 # Apply configuration and start NiFi
 #
@@ -96,4 +96,12 @@ USER 1001
 # Also we need to use relative path, because the exec form does not invoke a command shell,
 # thus normal shell processing does not happen:
 # https://docs.docker.com/engine/reference/builder/#exec-form-entrypoint-example
-ENTRYPOINT ["sh", "../scripts/start.sh"]
+#ENTRYPOINT ["sh", "../scripts/start.sh"]
+
+RUN mkdir nifi-1.11.4 && cp -a conf nifi-1.11.4/conf
+
+COPY --chown=nifi:nifi start-patched.sh ../scripts
+
+RUN chmod a+x ../scripts/start-patched.sh
+
+ENTRYPOINT ../scripts/start-patched.sh
