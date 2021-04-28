@@ -27,8 +27,9 @@ ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
 USER root
 
-ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
+ADD sh/ ${NIFI_BASE_DIR}/scripts
+ADD start-patched.sh ${NIFI_BASE_DIR}/scripts
+RUN chmod -R a+x ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
@@ -100,8 +101,5 @@ WORKDIR ${NIFI_HOME}
 
 RUN mkdir nifi-1.11.4 && cp -a conf nifi-1.11.4/conf
 
-COPY --chown=nifi:nifi start-patched.sh ../scripts
-
-RUN chmod a+x ../scripts/start-patched.sh
 
 ENTRYPOINT ../scripts/start-patched.sh
