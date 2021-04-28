@@ -101,4 +101,4 @@ WORKDIR ${NIFI_HOME}
 RUN mkdir nifi-1.11.4 && cp -a conf nifi-1.11.4/conf
 
 
-ENTRYPOINT ../scripts/start-patched.sh
+ENTRYPOINT ../scripts/start-openshift-nifi.sh
