@@ -105,4 +105,4 @@ USER nifi
 
 
 
-ENTRYPOINT ../scripts/start-openshift-nifi.sh
+ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
