@@ -25,14 +25,17 @@ echo Override JVM memory settings
 # Override JVM memory settings
 if [ ! -z "${NIFI_JVM_HEAP_INIT}" ]; then
     prop_replace 'java.arg.2'       "-Xms${NIFI_JVM_HEAP_INIT}" ${nifi_bootstrap_file}
+    echo Override JVM memory settings 1
 fi
 
 if [ ! -z "${NIFI_JVM_HEAP_MAX}" ]; then
     prop_replace 'java.arg.3'       "-Xmx${NIFI_JVM_HEAP_MAX}" ${nifi_bootstrap_file}
+    echo Override JVM memory settings 2
 fi
 
 if [ ! -z "${NIFI_JVM_DEBUGGER}" ]; then
     uncomment "java.arg.debug" ${nifi_bootstrap_file}
+    echo Override JVM memory settings 3
 fi
 echo Establish baseline properties
 # Establish baseline properties
