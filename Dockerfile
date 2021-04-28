@@ -39,6 +39,8 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
 # Fix the permissions when running in OpenShift
 RUN chmod -R a+rwx /opt/nifi
 RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
+RUN chmod +x /opt/nifi/scripts/toolkit.sh
+
 
 USER nifi
 
@@ -73,6 +75,13 @@ VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/provenance_repository \
        ${NIFI_HOME}/state
 
+user root
+# Fix the permissions when running in OpenShift
+RUN chmod -R a+rwx /opt/nifi
+RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
+RUN chmod +x /opt/nifi/scripts/toolkit.sh
+
+user nifi
 # Clear nifi-env.sh in favour of configuring all environment variables in the Dockerfile
 RUN echo "#!/bin/sh\n" > $NIFI_HOME/bin/nifi-env.sh
 
