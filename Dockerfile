@@ -36,14 +36,6 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
 
-# Fix the permissions when running in OpenShift
-RUN chmod -R a+rwx /opt/nifi
-RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
-RUN chmod +x /opt/nifi/scripts/toolkit.sh
-
-
-USER nifi
-
 # Download, validate, and expand Apache NiFi Toolkit binary.
 RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_TOOLKIT_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-toolkit-${NIFI_VERSION}-bin.zip \
     && echo "$(curl ${BASE_URL}/${NIFI_TOOLKIT_BINARY_PATH}.sha256) *${NIFI_BASE_DIR}/nifi-toolkit-${NIFI_VERSION}-bin.zip" | sha256sum -c - \
@@ -75,18 +67,21 @@ VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/provenance_repository \
        ${NIFI_HOME}/state
 
-user root
-# Fix the permissions when running in OpenShift
-RUN chmod -R a+rwx /opt/nifi
-RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
-RUN chmod +x /opt/nifi/scripts/toolkit.sh
 
-user nifi
 # Clear nifi-env.sh in favour of configuring all environment variables in the Dockerfile
+RUN chmod +x ${NIFI_HOME}/bin/nifi-env.sh
 RUN echo "#!/bin/sh\n" > $NIFI_HOME/bin/nifi-env.sh
 
 # Web HTTP(s) & Socket Site-to-Site Ports
 EXPOSE 8080 8443 10000 8000
+
+
+# Fix the permissions when running in OpenShift
+RUN chmod -R a+rwx /opt/nifi
+RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
+#RUN chmod +x /opt/nifi/scripts/toolkit.sh
+
+user nifi
 
 WORKDIR ${NIFI_HOME}
 
