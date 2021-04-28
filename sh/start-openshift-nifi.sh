@@ -5,4 +5,4 @@
 [ ! -z $KUBERNETES_HEADLESS_SERVICE_NAME ] && HOSTNAME=$HOSTNAME.$KUBERNETES_HEADLESS_SERVICE_NAME
 
 
-su ../scripts/start.sh
+su /opt/nifi/scripts/start.sh
