@@ -1,6 +1,5 @@
 #!/bin/sh -e
 echo starting start-openshift-nifi.sh
-pdw
 
 [ ! -f conf/nifi.properties ] && cp -a nifi-1.11.4/conf .
 
