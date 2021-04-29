@@ -30,7 +30,10 @@ ENV NIFI_HOME ${NIFI_BASE_DIR}/nifi-current
 USER root
 
 ADD sh/ ${NIFI_BASE_DIR}/scripts
-RUN chmod -R a+x ${NIFI_BASE_DIR}/scripts/*.sh
+ADD conf ${NIFI_BASE_DIR}/conf
+RUN chmod -R a+rx ${NIFI_BASE_DIR}/scripts/*.sh
+RUN chmod -R ugo+rw ${NIFI_BASE_DIR}/conf
+RUN chown -R nifi:nifi ${NIFI_BASE_DIR}
 #
 ## Setup NiFi user and create necessary directories
 #RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
@@ -81,9 +84,9 @@ RUN chmod -R a+x ${NIFI_BASE_DIR}/scripts/*.sh
 #
 #
 # Fix the permissions when running in OpenShift
-RUN chmod -R ugo+rw /opt/nifi/
+#RUN chmod -R ugo+rw /opt/nifi
 RUN find /opt/nifi -type f -iname "*.sh" -exec chmod +x {} \;
-RUN chmod -R ugo+rw /opt/nifi/nifi-current/conf
+#RUN chmod -R ugo+rw /opt/nifi/nifi-current/conf
 
 WORKDIR ${NIFI_HOME}
 
