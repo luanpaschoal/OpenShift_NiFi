@@ -60,15 +60,11 @@ RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-${
     && mkdir -p ${NIFI_LOG_DIR} \
     && ln -s ${NIFI_HOME} ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}
     
-USER root
+
 # fix the config issue for Openshift    
-RUN chmod -R ugo+x ${NIFI_HOME}
+RUN chmod -R o+rwx ${NIFI_HOME}
 #RUN chmod -R ugo+x ${NIFI_HOME}/conf
 RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
-
-CMD ["ls -alR /opt/nifi"]
-
-USER nifi
 
 VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/conf \
