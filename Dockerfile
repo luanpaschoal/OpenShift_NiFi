@@ -60,11 +60,15 @@ RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-${
     && mkdir -p ${NIFI_LOG_DIR} \
     && ln -s ${NIFI_HOME} ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}
     
+USER root
 # fix the config issue for Openshift    
-RUN chmod -R ugo+rw ${NIFI_HOME}
-#RUN chmod -R ugo+rw ${NIFI_HOME}/conf
-RUN chmod -R ugo+rwx ${NIFI_HOME}/bin/*sh
+RUN chmod -R ugo+x ${NIFI_HOME}
+#RUN chmod -R ugo+x ${NIFI_HOME}/conf
+RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
 
+CMD ["ls -alR /opt/nifi"]
+
+USER nifi
 
 VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/conf \
@@ -91,4 +95,6 @@ WORKDIR ${NIFI_HOME}
 # Also we need to use relative path, because the exec form does not invoke a command shell,
 # thus normal shell processing does not happen:
 # https://docs.docker.com/engine/reference/builder/#exec-form-entrypoint-example
+
+
 ENTRYPOINT ["sh", "../scripts/start.sh"]
