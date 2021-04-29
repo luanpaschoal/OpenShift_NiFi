@@ -14,7 +14,7 @@
   limitations under the License.
 -->
 <!--
-    This file lists the userGroupProviders, accessPolicyProviders, and authorizers to use when running securely. In order
+    This file lists the userGroupProviders, accessPolicyProviders, and authorizers to use when running securely.  In order
     to use a specific authorizer it must be configured here and it's identifier must be specified in the nifi.properties file.
     If the authorizer is a managedAuthorizer, it may need to be configured with an accessPolicyProvider and an userGroupProvider.
     This file allows for configuration of them, but they must be configured in order:
