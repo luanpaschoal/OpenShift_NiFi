@@ -8,4 +8,5 @@ ls -alR /opt/nifi
 
 echo kicking off start.sh
 su nifi
+
 ../scripts/start.sh

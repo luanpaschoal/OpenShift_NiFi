@@ -1,7 +1,7 @@
 FROM apache/nifi:1.11.4
 
 ## The following has been changed from https://github.com/apache/nifi.git
-#
+##
 ## NiFi version 1.11.4 will be used
 #
 #ARG IMAGE_NAME=openjdk
