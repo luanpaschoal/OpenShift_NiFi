@@ -17,4 +17,4 @@ COPY --chown=nifi:nifi start-openshift-nifi.sh ../scripts
 
 RUN chmod a+x ../scripts/start-openshift-nifi.sh
 
-ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+ENTRYPOINT ../scripts/start-openshift-nifi.sh
