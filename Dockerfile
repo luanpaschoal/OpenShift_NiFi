@@ -7,7 +7,7 @@ LABEL maintainer="${MAINTAINER}"
 LABEL site="https://github.com/TassoneSE"
 
 # fix the config issue for Openshift    
-RUN chmod -R a+rwx ${NIFI_HOME}
+
 #RUN chmod -R ugo+x ${NIFI_HOME}/conf
 #RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
 
@@ -16,5 +16,7 @@ RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 COPY --chown=nifi:nifi start-openshift-nifi.sh ../scripts
 
 RUN chmod a+x ../scripts/start-openshift-nifi.sh
+
+RUN chmod -R a+rwx ${NIFI_HOME}
 
 ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
