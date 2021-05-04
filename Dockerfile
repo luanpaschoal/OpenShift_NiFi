@@ -1,4 +1,4 @@
-ARG IMAGE_NAME=apache/nifi:latest
+ARG IMAGE_NAME=apache/nifi
 ARG IMAGE_TAG=1.11.4
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
