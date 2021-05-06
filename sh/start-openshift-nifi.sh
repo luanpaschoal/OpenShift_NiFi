@@ -4,7 +4,7 @@ echo Path: $PWD
 
 #useradd -u 1000160005 poduser
 
-chown -R :1000160005 /opt/nifi/
+sudo chown -R :1000160005 /opt/nifi/
 
 echo whoami:
 myuser=$(whoami)
