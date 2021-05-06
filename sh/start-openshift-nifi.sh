@@ -5,9 +5,11 @@ echo Path: $PWD
 echo Pre Nifi ID:
 id nifi
 
-groupmod -g 1000160005
+groupmod -g 1000160005 nifi
+
 
 usermod -u 1000160005 -g 1000160005 nifi
+
 echo Post Nifi ID:
 id nifi
 
@@ -20,4 +22,4 @@ echo end
 #echo kicking off start.sh
 #su nifi
 
- ../scripts/start.sh
+# ../scripts/start.sh
