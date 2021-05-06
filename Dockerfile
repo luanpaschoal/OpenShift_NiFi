@@ -62,7 +62,7 @@ USER nifi
 #    
 #
 ## fix the config issue for Openshift    
-RUN chmod -R o+rwx ${NIFI_HOME}
+#RUN chmod -R o+rwx ${NIFI_HOME}
 ##RUN chmod -R ugo+x ${NIFI_HOME}/conf
 ##RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
 #
@@ -80,7 +80,7 @@ RUN chmod -R o+rwx ${NIFI_HOME}
 # Web HTTP(s) & Socket Site-to-Site Ports
 EXPOSE 8080 8443 10000 8000
 
-WORKDIR ${NIFI_HOME}
+#WORKDIR ${NIFI_HOME}
 
 # Apply configuration and start NiFi
 #
@@ -101,4 +101,7 @@ WORKDIR ${NIFI_HOME}
 # kick off the custom start script that will put back the conf files post 
 # Persistent Volume setup
 
-ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+#ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+# Use for debug
+ENTRYPOINT ["sh", "${NIFI_BASE_DIR}/scripts/start-openshift-nifi.sh"]
+
