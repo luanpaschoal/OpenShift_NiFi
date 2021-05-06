@@ -5,15 +5,8 @@ echo Path: $PWD
 echo Pre Nifi ID:
 id nifi
 
-groupmod -g 1000160005 nifi
 
-
-usermod -u 1000160005 -g 1000160005 nifi
-
-echo Post Nifi ID:
-id nifi
-
-[ ! -f conf/nifi.properties ] && cp -a nifi-temp/conf .
+#[ ! -f conf/nifi.properties ] && cp -a nifi-temp/conf .
 
 
 ls -alR /opt/nifi
