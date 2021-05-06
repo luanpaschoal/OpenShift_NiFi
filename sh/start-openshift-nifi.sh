@@ -25,4 +25,4 @@ echo end
 #echo kicking off start.sh
 #su nifi
 
-# ../scripts/start.sh
+ ../scripts/start.sh
