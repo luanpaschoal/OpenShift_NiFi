@@ -103,5 +103,5 @@ EXPOSE 8080 8443 10000 8000
 
 #ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
 # Use for debug
-ENTRYPOINT ["sh", "${NIFI_BASE_DIR}/scripts/start-openshift-nifi.sh"]
+ENTRYPOINT ["sh", "/opt/nifi/scripts/start-openshift-nifi.sh"]
 
