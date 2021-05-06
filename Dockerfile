@@ -25,7 +25,7 @@ ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN chmod -R ugo+x ${NIFI_BASE_DIR}/scripts/*.sh
+RUN chmod -R a+rwx ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
@@ -95,10 +95,9 @@ WORKDIR ${NIFI_HOME}
 # This is the original ckick off
 ##ENTRYPOINT ["sh", "../scripts/start.sh"]
 
-## make a new Dir for a copy of the config
-##RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
+# make a new Dir for a copy of the config
+RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 
 # kick off the custom start script that will put back the conf files post 
 # Persistent Volume setup
-
 ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
