@@ -18,7 +18,7 @@ sudo usermod -a -G nifipodusers nifi
 sudo usermod -a -G nifipodusers poduser
 
 # Give group fill access to everything under /opt/nifi/
-sudo chown -R nifipodusers /opt/nifi
+sudo chgrp -R nifipodusers /opt/nifi
 sudo chmod -R 770 /opt/nifi
 
 #change to the new user
