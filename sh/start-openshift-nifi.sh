@@ -2,8 +2,8 @@
 echo starting start-openshift-nifi.sh
 echo Path: $PWD
 echo Pre Nifi ID:
-id nifi
 
+echo "Creating new user and group for nifi user"
 # create new user under Openshift accepted group UID. "$ oc describe project [Project-Name]"
 sudo useradd -u 1000160010 poduser
 # create a new group under Openshift accepted group GID. "$ oc describe project [Project-Name]"
@@ -22,7 +22,7 @@ sudo chown -R nifipodusers /opt/nifi
 sudo chmod -R 770 /opt/nifi
 
 #change to the new user
-sudo su poduser
+sudo su nifi
 
 # Just test to see who is running
 echo whoami:
