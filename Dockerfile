@@ -9,7 +9,7 @@ LABEL maintainer="${MAINTAINER}"
 LABEL site="https://github.com/TassoneSE"
 
 
-ARG UID=1000
+ARG UID=1000160005
 ARG GID=1000
 ARG NIFI_VERSION=1.11.4
 ARG BASE_URL=https://archive.apache.org/dist
