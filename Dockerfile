@@ -9,8 +9,8 @@ LABEL maintainer="${MAINTAINER}"
 LABEL site="https://github.com/TassoneSE"
 
 
-ARG UID=1000
-ARG GID=1000
+ARG UID=1000160001
+ARG GID=1000160001
 ARG NIFI_VERSION=1.11.4
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -62,9 +62,9 @@ RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-${
     
 
 # fix the config issue for Openshift    
-RUN chmod -R o+rwx ${NIFI_HOME}
+#RUN chmod -R o+rwx ${NIFI_HOME}
 #RUN chmod -R ugo+x ${NIFI_HOME}/conf
-RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
+#RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
 
 VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/conf \
