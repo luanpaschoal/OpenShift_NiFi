@@ -22,7 +22,7 @@ sudo chown -R nifipodusers /opt/nifi
 sudo chmod -R 770 /opt/nifi
 
 #change to the new user
-sudo su nifi
+sudo su poduser
 
 # Just test to see who is running
 echo whoami:
