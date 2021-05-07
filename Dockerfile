@@ -25,7 +25,7 @@ ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN chmod -R ugo+rwx ${NIFI_BASE_DIR}/scripts/*.sh
+#RUN chmod -R ugo+rwx ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Original: Setup NiFi user and create necessary directories
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
