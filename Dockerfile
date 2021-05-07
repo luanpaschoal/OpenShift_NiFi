@@ -29,7 +29,7 @@ RUN chmod -R ugo+rwx ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
 #RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
-RUN groupadd -g ${GID} nifi \
+RUN sudo useradd -m nifi \
 #    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
     && mkdir -p ${NIFI_BASE_DIR} \
     && chown -R nifi ${NIFI_BASE_DIR} \
@@ -105,4 +105,4 @@ RUN mkdir ${NIFI_BASE_DIR}/nifitestdir
 
 # kick off the custom start script that will put back the conf files post 
 # Persistent Volume setup
-ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+ENTRYPOINT ["sh", "/opt/nifi/scripts/start-openshift-nifi.sh"]
