@@ -67,11 +67,6 @@ RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-${
     && ln -s ${NIFI_HOME} ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}
     
 
-## Chris code: fix the config issue for Openshift... maybe  
-#RUN chmod -R a+rw ${NIFI_HOME}
-#RUN chmod -R a+rwx ${NIFI_HOME}/conf
-#RUN chmod -R a+x ${NIFI_HOME}/bin/*.sh
-
 VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/conf \
        ${NIFI_HOME}/database_repository \
