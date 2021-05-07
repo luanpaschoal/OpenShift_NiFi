@@ -20,8 +20,8 @@ sudo usermod -a -G nifipodusers nifi
 sudo usermod -a -G nifipodusers poduser
 
 # Give group fill access to everything under /opt/nifi/
-sudo chgrp -R nifipodusers /opt/nifi
-#sudo chmod -R 770 /opt/nifi
+sudo chgrp -R :nifipodusers /opt/nifi
+sudo chmod -R 770 /opt/nifi
 
 
 # copy the temp conf dir over if there is no nifi.properties
