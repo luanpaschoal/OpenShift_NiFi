@@ -40,7 +40,7 @@ echo my IDs are: $myid
 ehco "/n/n/n/nListing all the DIR:"
 
 # List who owns dir's inside of nifi
-ls -la /opt/nifi
+ls -alR /opt/nifi
 
 
 echo kicking off start.sh
