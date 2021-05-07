@@ -105,5 +105,5 @@ RUN mkdir ${NIFI_BASE_DIR}/nifitestdir
 
 # kick off the custom start script that will put back the conf files post 
 # Persistent Volume setup
-#ENTRYPOINT ["sh", "/opt/nifi/scripts/start-openshift-nifi.sh"]
-ENTRYPOINT [ "/opt/nifi/scripts/start-openshift-nifi.sh" ]
+ENTRYPOINT ["sh", "/opt/nifi/scripts/start-openshift-nifi.sh"]
+#ENTRYPOINT [ "/opt/nifi/scripts/start-openshift-nifi.sh" ]
