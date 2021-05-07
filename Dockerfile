@@ -9,8 +9,8 @@ LABEL maintainer="${MAINTAINER}"
 LABEL site="https://github.com/TassoneSE"
 
 
-ARG UID=1000
-ARG GID=1000
+#ARG UID=1000
+#ARG GID=1000
 ARG NIFI_VERSION=1.11.4
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -36,7 +36,7 @@ RUN useradd -m nifi \
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
 
-USER nifi
+#USER nifi
 
 RUN mkdir ${NIFI_BASE_DIR}/nifitestdir
 
