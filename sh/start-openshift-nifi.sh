@@ -15,6 +15,8 @@ sudo useradd -u 1000160001 poduser
 # create a new group under Openshift accepted group GID. "$ oc describe project [Project-Name]"
 sudo groupadd -g 1000160001 nifipodusers
 
+#sudo usermod -u 1000160002 nifi
+
 # Add the docker user nifi and the new user to the group nifipodusers
 sudo usermod -a -G nifipodusers nifi
 sudo usermod -a -G nifipodusers poduser
@@ -28,7 +30,7 @@ sudo chmod -R 770 /opt/nifi
 #[ ! -f conf/nifi.properties ] && cp -a nifi-temp/conf .
 
 #change to the new user
-sudo su poduser
+sudo su - poduser
 
 # Just test to see who is running
 echo whoami:
