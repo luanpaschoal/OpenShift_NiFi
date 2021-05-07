@@ -25,7 +25,7 @@ sudo chgrp -R nifipodusers /opt/nifi
 
 
 # copy the temp conf dir over if there is no nifi.properties
-[ ! -f conf/nifi.properties ] && cp -a nifi-temp/conf .
+#[ ! -f conf/nifi.properties ] && cp -a nifi-temp/conf .
 
 #change to the new user
 sudo su poduser
@@ -37,12 +37,12 @@ ehco I am: $myuser
 myid=$(id)
 echo my IDs are: $myid
 
-ehco /n/n/n/nListing all the DIR:
+ehco "/n/n/n/nListing all the DIR:"
 
 # List who owns dir's inside of nifi
-ls -alR /opt/nifi
+ls -la /opt/nifi
 
 
 echo kicking off start.sh
 
-../scripts/start.sh
+#../scripts/start.sh
