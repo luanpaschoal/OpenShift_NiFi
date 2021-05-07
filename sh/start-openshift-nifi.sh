@@ -17,11 +17,11 @@ useradd -u 1000160001 poduser
 groupadd -g 1000160001 nifipodusers
 
 # assign nif with a valid UID to run in Openshift
-#sudo usermod -u 1000160002 nifi
+usermod -u 1000160002 nifi
 
 # Add user nifi/poduser the group nifipodusers
 usermod -a -G nifipodusers nifi
-usermod -a -G nifipodusers poduser
+#usermod -a -G nifipodusers poduser
 
 # Give group fill access to everything under /opt/nifi/
 chgrp -R nifipodusers /opt/nifi
@@ -31,7 +31,7 @@ chmod -R 770 /opt/nifi
 
 
 #change to the new user
-su poduser
+su nifi
 
 # Just test to see who is running
 whoami
