@@ -25,7 +25,7 @@ ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN chmod -R a+rwx ${NIFI_BASE_DIR}/scripts/*.sh
+RUN chmod -R ugo+rwx ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
@@ -62,9 +62,9 @@ RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-${
     
 
 ## fix the config issue for Openshift    
-#RUN chmod -R o+rwx ${NIFI_HOME}
-##RUN chmod -R ugo+x ${NIFI_HOME}/conf
-#RUN chmod -R o+rwx ${NIFI_HOME}/bin/*.sh
+RUN chmod -R a+rw ${NIFI_HOME}
+RUN chmod -R a+rwx ${NIFI_HOME}/conf
+RUN chmod -R a+x ${NIFI_HOME}/bin/*.sh
 
 VOLUME ${NIFI_LOG_DIR} \
        ${NIFI_HOME}/conf \
@@ -97,6 +97,7 @@ WORKDIR ${NIFI_HOME}
 
 # make a new Dir for a copy of the config
 RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
+RUN chmod -R a+rwx nifi-temp/conf
 
 # kick off the custom start script that will put back the conf files post 
 # Persistent Volume setup
