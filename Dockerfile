@@ -1,5 +1,10 @@
-## The following has been changed from https://github.com/apache/nifi.git
-#
+## The following has been modified from https://github.com/apache/nifi.git
+# The following changes have been made to allow apache/nifi work perfectly with OpenShift
+# This makes a copy of the conf DIR, then copies it back once OpenShift creates a persistent volume.
+#     More info: https://issues.apache.org/jira/browse/NIFI-6484
+# We have also allowed docker to create this image as root and not let user 'nifi' have any involvement
+
+# OpenSHift UPDATE: updated JDK to 11. well it's not needed but it's nice to have
 ARG IMAGE_NAME=openjdk
 ARG IMAGE_TAG=11
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
@@ -24,8 +29,10 @@ ENV NIFI_TOOLKIT_HOME ${NIFI_BASE_DIR}/nifi-toolkit-current
 ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
+
+# OpenSHift UPDATE: git folder sh now has a new ENTRYPOINT script
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-#RUN chmod -R ugo+rwx ${NIFI_BASE_DIR}/scripts/*.sh
+RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Original: Setup NiFi user and create necessary directories
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
@@ -35,12 +42,7 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
     
-# Update : Setup NiFi user and create necessary directories. we do not like user NiFi
-RUN mkdir -p ${NIFI_BASE_DIR} \
-    && apt-get update \
-    && apt-get install -y jq xmlstarlet procps
-
-# Do not run as nifi
+# OpenSHift UPDATE: Do not run as nifi
 #USER nifi
 
 # Download, validate, and expand Apache NiFi Toolkit binary.
@@ -92,14 +94,13 @@ WORKDIR ${NIFI_HOME}
 # Also we need to use relative path, because the exec form does not invoke a command shell,
 # thus normal shell processing does not happen:
 # https://docs.docker.com/engine/reference/builder/#exec-form-entrypoint-example
+ENTRYPOINT ["../scripts/start.sh"]
 
-# This is the original ckick off
-##ENTRYPOINT ["sh", "../scripts/start.sh"]
-
-# make a new Dir for a copy of the config
+# OpenSHift UPDATE: make new DIR 'nifi-temp' and copy over conf
+# This is due to how the OpenShift Persistent Volume works
 RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 RUN chmod -R a+rwx nifi-temp/conf
 
-# kick off the custom start script that will put back the conf files post 
-# Persistent Volume setup
+# kick off the custom start script
+
 ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
