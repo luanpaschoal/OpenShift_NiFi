@@ -46,5 +46,5 @@ ls -alR /opt/nifi
 
 
 echo kicking off start.sh
-
+sleep 360
 #../scripts/start.sh
