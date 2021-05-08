@@ -16,7 +16,7 @@ echo "Copying conf DIR from nifi-temp/conf if nifi.properties is not in /opt/nif
 [ ! -f conf/nifi.properties ] && cp -a nifi-temp/conf .
 echo "Done\n"
 
-echo "Creating new user NiFi with UID 1000160002 ..."
+echo "Updating user 'nifi' with UID 1000160002 ..."
 # create new user under OpenShift accepted group UID. "$ oc describe project [Project-Name]"
 usermod -u 1000160002 nifi
 echo "Done\n"
