@@ -52,7 +52,7 @@ echo "Done"
 
 # Enable sleep to inspect the pod
 #echo sleeping for 1 hour
-#sleep 1h
+sleep 1h
 #sleep 60
 
 su nifi bash -c 'echo "I am $USER, with uid $UID"'
