@@ -46,7 +46,10 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
     && chown -R nifi:nifi ${NIFI_BASE_DIR} \
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
-    
+
+# OpenSHift UPDATE: THis is to allow Openshift to run sudo
+RUN apt-get install sudo
+
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
 
