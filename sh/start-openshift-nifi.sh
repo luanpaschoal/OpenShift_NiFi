@@ -6,6 +6,14 @@ echo "## Please see: https://www.openshift.com/blog/a-guide-to-openshift-and-uid
 echo "##             Under:TRADITIONAL APPLICATIONS AND UIDS                            ##"
 echo "####################################################################################"
 
+# If Enviroment Verable DEBUG=true
+#echo sleeping for 1 hour
+if $OS_DEBUG ; then
+    #sleep 60
+    sleep 1h
+fi
+
+
 echo "I am"
 whoami 
 echo "let me fix a few things for you..."
@@ -49,11 +57,6 @@ echo "Done"
 # List who owns DIR's inside of nifi
 #ls -alR /opt/nifi
 #ls -al
-
-# Enable sleep to inspect the pod
-#echo sleeping for 1 hour
-sleep 1h
-#sleep 60
 
 su nifi bash -c 'echo "I am $USER, with uid $UID"'
 su nifi bash -c  'echo "current path ($PWD) should equal (/opt/nifi/nifi-current)"'
