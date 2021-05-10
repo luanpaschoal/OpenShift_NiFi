@@ -8,7 +8,7 @@ echo "##########################################################################
 
 # If Enviroment Verable DEBUG=true
 #echo sleeping for 1 hour
-if [ "$OS_DEBUG" == true ] ; then
+if $OS_DEBUG ; then
     #sleep 60
     sleep 1h
 fi
