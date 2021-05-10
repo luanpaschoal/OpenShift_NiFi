@@ -11,7 +11,7 @@ FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
 ARG OSN_MAINTAINER="C Tassone <tassone.se@gmail.com>" 
 ARG OSN_NAME="OpenShift_NiFi"
-ARG OSN_VERSION="1.0"
+ARG OSN_VERSION="1.1"
 ARG OSN_SITE="https://github.com/TassoneSE"
 
 LABEL maintainer="${MAINTAINER}" \
