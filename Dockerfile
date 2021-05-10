@@ -111,4 +111,5 @@ RUN chmod -R a+rwx /opt/nifi
 
 # kick off the custom start script
 
-ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+#ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+ENTRYPOINT ../scripts/start-openshift-nifi.sh
