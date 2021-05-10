@@ -9,9 +9,15 @@ ARG IMAGE_NAME=openjdk
 ARG IMAGE_TAG=11
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
-ARG MAINTAINER="C Tassone <tassone.se@gmail.com>"
-LABEL maintainer="${MAINTAINER}"
-LABEL site="https://github.com/TassoneSE"
+ARG OSN_MAINTAINER="C Tassone <tassone.se@gmail.com>" 
+ARG OSN_NAME="OpenShift_NiFi"
+ARG OSN_VERSION="1.0"
+ARG OSN_SITE="https://github.com/TassoneSE"
+
+LABEL maintainer="${MAINTAINER}" \
+      name="${NAME}" \
+      version="${OSN_VERSION}" \
+      site="${OSN_SITE}"
 
 
 ARG UID=1000
