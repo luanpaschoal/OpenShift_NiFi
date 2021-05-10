@@ -19,7 +19,6 @@ LABEL maintainer="${MAINTAINER}" \
       version="${OSN_VERSION}" \
       site="${OSN_SITE}"
 
-
 ARG UID=1000
 ARG GID=1000
 ARG NIFI_VERSION=1.11.4
