@@ -106,6 +106,9 @@ WORKDIR ${NIFI_HOME}
 RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 RUN chmod -R a+rwx nifi-temp/conf
 
+# OpenSHift UPDATE: Give everyone full permissions. Just for testing
+RUN chmod -R a+rwx /opt/nifi
+
 # kick off the custom start script
 
 ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
