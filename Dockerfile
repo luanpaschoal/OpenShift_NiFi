@@ -19,8 +19,8 @@ LABEL maintainer="${MAINTAINER}" \
       version="${OSN_VERSION}" \
       site="${OSN_SITE}"
 
-ARG UID=${OS_GID}
-ARG GID=${OS_GID}
+#ARG UID=${OS_GID}
+#ARG GID=${OS_GID}
 ARG NIFI_VERSION=1.11.4
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -40,8 +40,9 @@ ADD sh/ ${NIFI_BASE_DIR}/scripts/
 RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
-RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
-    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
+RUN groupadd -r nifi && useradd --no-log-init -r -g nifi nifi && \
+    #groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
+    #&& useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
     && mkdir -p ${NIFI_BASE_DIR} \
     && chown -R nifi:nifi ${NIFI_BASE_DIR} \
     && apt-get update \
