@@ -19,8 +19,8 @@ LABEL maintainer="${MAINTAINER}" \
       version="${OSN_VERSION}" \
       site="${OSN_SITE}"
 
-ARG UID=1000
-ARG GID=1000
+ARG UID=${OS_GID}
+ARG GID=${OS_GID}
 ARG NIFI_VERSION=1.11.4
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -46,9 +46,6 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
     && chown -R nifi:nifi ${NIFI_BASE_DIR} \
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
-
-# OpenSHift UPDATE: THis is to allow Openshift to run sudo
-RUN apt-get install sudo
 
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
@@ -110,9 +107,9 @@ RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 RUN chmod -R a+rwx nifi-temp/conf
 
 # OpenSHift UPDATE: Give everyone full permissions. Just for testing
-RUN chmod -R a+rwx /opt/nifi
+RUN chmod -R g+rwx /opt/nifi
 
 # kick off the custom start script
-
+USER nifi
 #ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
 ENTRYPOINT ../scripts/start-openshift-nifi.sh
