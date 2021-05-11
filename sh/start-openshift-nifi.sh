@@ -58,8 +58,8 @@ echo "Done"
 #ls -alR /opt/nifi
 #ls -al
 
-su nifi bash -c 'echo "I am $USER, with uid $UID"'
-su nifi bash -c  'echo "current path ($PWD) should equal (/opt/nifi/nifi-current)"'
+#su nifi bash -c 'echo "I am $USER, with uid $UID"'
+#su nifi bash -c  'echo "current path ($PWD) should equal (/opt/nifi/nifi-current)"'
 
 echo "kicking off NiFi's original ENTRYPOINT start.sh as user nifi"
-su nifi bash -c '../scripts/start.sh'
+../scripts/start.sh
