@@ -4,14 +4,13 @@
 #     More info: https://issues.apache.org/jira/browse/NIFI-6484
 # We have also allowed docker to create this image as root and not let user 'nifi' have any involvement
 
-# OpenSHift UPDATE: updated JDK to 11. well it's not needed but it's nice to have
 ARG IMAGE_NAME=openjdk
 ARG IMAGE_TAG=11
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
 ARG OSN_MAINTAINER="C Tassone <tassone.se@gmail.com>" 
 ARG OSN_NAME="OpenShift_NiFi"
-ARG OSN_VERSION="1.1"
+ARG OSN_VERSION="1.0"
 ARG OSN_SITE="https://github.com/TassoneSE"
 
 LABEL maintainer="${MAINTAINER}" \
@@ -19,8 +18,8 @@ LABEL maintainer="${MAINTAINER}" \
       version="${OSN_VERSION}" \
       site="${OSN_SITE}"
 
-#ARG UID=${OS_GID}
-#ARG GID=${OS_GID}
+ARG UID=1000
+ARG GID=1000
 ARG NIFI_VERSION=1.11.4
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -40,14 +39,13 @@ ADD sh/ ${NIFI_BASE_DIR}/scripts/
 RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
 
 # Setup NiFi user and create necessary directories
-RUN groupadd -r nifi && useradd --no-log-init -r -g nifi nifi \
-    #groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
-    #&& useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
+RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
+    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
     && mkdir -p ${NIFI_BASE_DIR} \
     && chown -R nifi:nifi ${NIFI_BASE_DIR} \
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
-
+    
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
 
@@ -107,10 +105,5 @@ WORKDIR ${NIFI_HOME}
 RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 RUN chmod -R a+rwx nifi-temp/conf
 
-# OpenSHift UPDATE: Give everyone full permissions. Just for testing
-RUN chmod -R g+rwx /opt/nifi
-
 # kick off the custom start script
-USER nifi
-#ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
-ENTRYPOINT ../scripts/start-openshift-nifi.sh
+ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
