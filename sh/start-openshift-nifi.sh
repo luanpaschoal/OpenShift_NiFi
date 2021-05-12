@@ -7,12 +7,11 @@ echo "##             Under:TRADITIONAL APPLICATIONS AND UIDS                    
 echo "####################################################################################"
 
 # If Enviroment Verable DEBUG=true
-#echo sleeping for 1 hour
 if $OS_DEBUG ; then
+    echo "Gpomg to sleep for 1 hour"
     #sleep 60
     sleep 1h
 fi
-
 
 echo "I am"
 whoami 
@@ -58,8 +57,13 @@ echo "Done"
 #ls -alR /opt/nifi
 #ls -al
 
-#su nifi bash -c 'echo "I am $USER, with uid $UID"'
-#su nifi bash -c  'echo "current path ($PWD) should equal (/opt/nifi/nifi-current)"'
+# Enable sleep to inspect the pod
+#echo sleeping for 1 hour
+#sleep 1h
+#sleep 60
+
+su nifi bash -c 'echo "I am $USER, with uid $UID"'
+su nifi bash -c  'echo "current path ($PWD) should equal (/opt/nifi/nifi-current)"'
 
 echo "kicking off NiFi's original ENTRYPOINT start.sh as user nifi"
-../scripts/start.sh
+su nifi bash -c '../scripts/start.sh'
