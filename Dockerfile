@@ -13,8 +13,8 @@ ARG OSN_NAME="OpenShift_NiFi"
 ARG OSN_VERSION="1.0"
 ARG OSN_SITE="https://github.com/TassoneSE"
 
-LABEL maintainer="${MAINTAINER}" \
-      name="${NAME}" \
+LABEL maintainer="${OSN_MAINTAINER}" \
+      name="${OSN_NAME}" \
       version="${OSN_VERSION}" \
       site="${OSN_SITE}"
 
