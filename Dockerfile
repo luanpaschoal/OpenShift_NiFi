@@ -35,9 +35,8 @@ USER root
 
 # Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN dnf install -y  https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
-    && dnf install -y jq xmlstarlet procps \
-    && dnf update -y \
+RUN microdnf updated \
+    && microdnf install -y jq procps \
     && chgrp -R 0 ${NIFI_BASE_DIR} \
     && chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
 
