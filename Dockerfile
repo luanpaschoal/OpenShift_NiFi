@@ -33,23 +33,26 @@ ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
 USER root
 
-# OpenSHift UPDATE: git folder sh now has a new ENTRYPOINT script
+# Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
+RUN dnf install -y  https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+    && dnf install -y jq xmlstarlet procps \
+    && dnf update -y \
+    && chgrp -R 0 ${NIFI_BASE_DIR} \
+    && chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
 
 # Setup NiFi user and create necessary directories
-RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
-    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
-    && mkdir -p ${NIFI_BASE_DIR} \
-    && chgrp -R ${GID} ${NIFI_BASE_DIR} \
-    && chmod -R g=u ${NIFI_BASE_DIR} \
-    && microdnf update \
-    && microdnf install -y jq procps
+#RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
+#    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
+#    && mkdir -p ${NIFI_BASE_DIR} \
+#    && chgrp -R ${GID} ${NIFI_BASE_DIR} \
+#    && chmod -R g=u ${NIFI_BASE_DIR} \
+#    && microdnf update \
+#    && microdnf install -y jq procps
 # xmlstarlet   
 
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
-USER ${UID}
 
 # Download, validate, and expand Apache NiFi Toolkit binary.
 RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_TOOLKIT_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-toolkit-${NIFI_VERSION}-bin.zip \
@@ -90,10 +93,16 @@ VOLUME ${NIFI_LOG_DIR} \
 # Clear nifi-env.sh in favour of configuring all environment variables in the Dockerfile
 RUN echo "#!/bin/sh\n" > $NIFI_HOME/bin/nifi-env.sh
 
+# Fix perms for Openshift
+RUN chgrp -R 0 ${NIFI_BASE_DIR} \
+    && chmod -R g+rwX ${NIFI_BASE_DIR}
+
 # Web HTTP(s) & Socket Site-to-Site Ports
 EXPOSE 8080 8443 10000 8000
 
 WORKDIR ${NIFI_HOME}
+
+USER ${UID}
 
 # Apply configuration and start NiFi
 #
@@ -108,8 +117,8 @@ WORKDIR ${NIFI_HOME}
 
 # OpenSHift UPDATE: make new DIR 'nifi-temp' and copy over conf
 # This is due to how the OpenShift Persistent Volume works
-RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
-RUN chmod -R a+rwx nifi-temp/conf
+#RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
+#RUN chmod -R a+rwx nifi-temp/conf
 
 # kick off the custom start script
 ENTRYPOINT ["sh", "../scripts/start.sh"]
