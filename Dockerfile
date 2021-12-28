@@ -35,7 +35,7 @@ USER root
 
 # Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN microdnf updated \
+RUN microdnf update \
     && microdnf install -y jq procps \
     && chgrp -R 0 ${NIFI_BASE_DIR} \
     && chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
