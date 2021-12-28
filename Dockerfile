@@ -41,7 +41,8 @@ RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
     && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
     && mkdir -p ${NIFI_BASE_DIR} \
-    && chown -R nifi:nifi ${NIFI_BASE_DIR} \
+    && chgrp -R 0 ${NIFI_BASE_DIR} \
+    && chmod -R g=u ${NIFI_BASE_DIR} \
     && apt-get update \
     && apt-get install -y jq xmlstarlet procps
     
