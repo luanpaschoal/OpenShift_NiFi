@@ -11,8 +11,8 @@ FROM ${IMAGE_NAME}:${IMAGE_TAG}
 LABEL maintainer="Apache NiFi <dev@nifi.apache.org>"
 LABEL site="https://nifi.apache.org"
 
-ARG UID=1000
-ARG GID=1000
+ARG UID=1001
+ARG GID=0
 ARG NIFI_VERSION=1.15.2
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -41,10 +41,10 @@ RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
     && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
     && mkdir -p ${NIFI_BASE_DIR} \
-    && chgrp -R 0 ${NIFI_BASE_DIR} \
+    && chown -R ${UID}:{GID} ${NIFI_BASE_DIR} \
     && chmod -R g=u ${NIFI_BASE_DIR} \
-    && apt-get update \
-    && apt-get install -y jq xmlstarlet procps
+    && microdnf update \
+    && microdnf install -y jq xmlstarlet procps
     
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
