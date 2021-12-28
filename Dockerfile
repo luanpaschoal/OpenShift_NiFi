@@ -44,8 +44,9 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
     && chown -R ${UID}:${GID} ${NIFI_BASE_DIR} \
     && chmod -R g=u ${NIFI_BASE_DIR} \
     && microdnf update \
-    && microdnf install -y jq xmlstarlet procps
-    
+    && microdnf install -y jq procps
+# xmlstarlet   
+
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
 
