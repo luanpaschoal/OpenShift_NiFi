@@ -6,11 +6,11 @@ echo "## Please see: https://www.openshift.com/blog/a-guide-to-openshift-and-uid
 echo "##             Under:TRADITIONAL APPLICATIONS AND UIDS                            ##"
 echo "####################################################################################"
 
-# If Enviroment Verable DEBUG=true
+# If Enviroment Var DEBUG=true
 if $OS_DEBUG ; then
-    echo "Gpomg to sleep for 1 hour"
+    echo "Sleep for 2 min"
     #sleep 60
-    sleep 1h
+    sleep 2m
 fi
 
 echo "I am"
