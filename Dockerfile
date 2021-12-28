@@ -4,8 +4,8 @@
 #     More info: https://issues.apache.org/jira/browse/NIFI-6484
 # We have also allowed docker to create this image as root and not let user 'nifi' have any involvement
 
-ARG IMAGE_NAME=openjdk
-ARG IMAGE_TAG=11
+ARG IMAGE_NAME=registry.access.redhat.com/ubi8/openjdk-11
+ARG IMAGE_TAG=latest
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
 LABEL maintainer="Apache NiFi <dev@nifi.apache.org>"
