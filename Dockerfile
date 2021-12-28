@@ -31,6 +31,7 @@ ENV NIFI_TOOLKIT_HOME ${NIFI_BASE_DIR}/nifi-toolkit-current
 ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
+USER root
 
 # OpenSHift UPDATE: git folder sh now has a new ENTRYPOINT script
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
