@@ -8,23 +8,21 @@ ARG IMAGE_NAME=openjdk
 ARG IMAGE_TAG=11
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
-ARG OSN_MAINTAINER="C Tassone <tassone.se@gmail.com>" 
-ARG OSN_NAME="OpenShift_NiFi"
-ARG OSN_VERSION="1.0"
-ARG OSN_SITE="https://github.com/TassoneSE"
-
-LABEL maintainer="${OSN_MAINTAINER}" \
-      name="${OSN_NAME}" \
-      version="${OSN_VERSION}" \
-      site="${OSN_SITE}"
+LABEL maintainer="Apache NiFi <dev@nifi.apache.org>"
+LABEL site="https://nifi.apache.org"
 
 ARG UID=1000
 ARG GID=1000
-ARG NIFI_VERSION=1.11.4
+ARG NIFI_VERSION=1.15.2
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
 ARG NIFI_BINARY_PATH=${NIFI_BINARY_PATH:-/nifi/${NIFI_VERSION}/nifi-${NIFI_VERSION}-bin.zip}
 ARG NIFI_TOOLKIT_BINARY_PATH=${NIFI_TOOLKIT_BINARY_PATH:-/nifi/${NIFI_VERSION}/nifi-toolkit-${NIFI_VERSION}-bin.zip}
+
+ARG MYSQL_DRIVER=mysql-connector-java-8.0.16
+ARG MYSQL_DRIVER_URL=https://dev.mysql.com/get/Downloads/Connector-J/${MYSQL_DRIVER}.zip
+ARG POSTGRESQL_DRIVER=postgresql-42.3.1
+ARG POSTGRESQL_DRIVER_URL=https://jdbc.postgresql.org/download/${POSTGRESQL_DRIVER}.jar
 
 ENV NIFI_BASE_DIR=/opt/nifi
 ENV NIFI_HOME ${NIFI_BASE_DIR}/nifi-current
@@ -70,7 +68,11 @@ RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-${
     && mkdir -p ${NIFI_HOME}/provenance_repository \
     && mkdir -p ${NIFI_HOME}/state \
     && mkdir -p ${NIFI_LOG_DIR} \
-    && ln -s ${NIFI_HOME} ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}
+    && ln -s ${NIFI_HOME} ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION} \
+    && mkdir -p ${NIFI_HOME}/conf/drivers \
+    && curl -fSL ${MYSQL_DRIVER_URL} -o ${NIFI_HOME}/conf/drivers/${MYSQL_DRIVER}.zip \
+    && unzip -j ${NIFI_HOME}/conf/drivers/${MYSQL_DRIVER}.zip ${MYSQL_DRIVER}/${MYSQL_DRIVER}.jar -d ${NIFI_HOME}/conf/drivers \
+    && curl -fSL ${POSTGRESQL_DRIVER_URL} -o ${NIFI_HOME}/conf/drivers/${POSTGRESQL_DRIVER}.jar \
     
 
 VOLUME ${NIFI_LOG_DIR} \
