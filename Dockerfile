@@ -41,7 +41,7 @@ RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
     && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
     && mkdir -p ${NIFI_BASE_DIR} \
-    && chown -R ${UID}:${GID} ${NIFI_BASE_DIR} \
+    && chgrp -R ${GID} ${NIFI_BASE_DIR} \
     && chmod -R g=u ${NIFI_BASE_DIR} \
     && microdnf update \
     && microdnf install -y jq procps
@@ -49,6 +49,7 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
 
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
+USER ${UID}
 
 # Download, validate, and expand Apache NiFi Toolkit binary.
 RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_TOOLKIT_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-toolkit-${NIFI_VERSION}-bin.zip \
