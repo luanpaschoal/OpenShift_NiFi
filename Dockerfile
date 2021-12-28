@@ -111,4 +111,4 @@ RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
 RUN chmod -R a+rwx nifi-temp/conf
 
 # kick off the custom start script
-ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
+ENTRYPOINT ["sh", "../scripts/start.sh"]
