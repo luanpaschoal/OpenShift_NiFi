@@ -12,7 +12,7 @@ LABEL maintainer="Apache NiFi <dev@nifi.apache.org>"
 LABEL site="https://nifi.apache.org"
 
 ARG UID=1001
-ARG GID=0
+ARG GID=1000
 ARG NIFI_VERSION=1.15.2
 ARG BASE_URL=https://archive.apache.org/dist
 ARG MIRROR_BASE_URL=${MIRROR_BASE_URL:-${BASE_URL}}
@@ -31,23 +31,21 @@ ENV NIFI_TOOLKIT_HOME ${NIFI_BASE_DIR}/nifi-toolkit-current
 ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
-USER root
+# USER root
 
 # Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
 RUN microdnf update \
     && microdnf install -y jq procps \
-    && chgrp -R 0 ${NIFI_BASE_DIR} \
     && chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
 
 # Setup NiFi user and create necessary directories
-#RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
-#    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
-#    && mkdir -p ${NIFI_BASE_DIR} \
-#    && chgrp -R ${GID} ${NIFI_BASE_DIR} \
-#    && chmod -R g=u ${NIFI_BASE_DIR} \
-#    && microdnf update \
-#    && microdnf install -y jq procps
+RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
+    && useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
+    && mkdir -p ${NIFI_BASE_DIR} \
+    && chown -R nifi:nifi ${NIFI_BASE_DIR} \
+    && microdnf update \
+    && microdnf install -y jq procps
 # xmlstarlet   
 
 # OpenSHift UPDATE: Do not run as nifi
@@ -116,8 +114,8 @@ USER ${UID}
 
 # OpenSHift UPDATE: make new DIR 'nifi-temp' and copy over conf
 # This is due to how the OpenShift Persistent Volume works
-#RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
-#RUN chmod -R a+rwx nifi-temp/conf
+RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
+RUN chmod -R a+rwx nifi-temp/conf
 
 # kick off the custom start script
-ENTRYPOINT ["sh", "../scripts/start.sh"]
+ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
