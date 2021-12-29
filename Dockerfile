@@ -35,16 +35,12 @@ ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 # Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
 USER root
-RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
-
-# Setup NiFi user and create necessary directories
-RUN useradd --shell /bin/bash -u ${UID} -g ${GID} -m nifi \
-    && groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
-    && mkdir -p ${NIFI_BASE_DIR} \
-    && chown -R nifi:nifi ${NIFI_BASE_DIR} \
-    && microdnf update \
-    && microdnf install -y jq procps
-# xmlstarlet   
+RUN microdnf update \
+    && microdnf install -y jq procps \
+    && chgrp -R 0 ${NIFI_BASE_DIR} \
+    && chmod -R g+rwX ${NIFI_BASE_DIR}
+    # && chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh
+# xmlstarlet 
 
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
