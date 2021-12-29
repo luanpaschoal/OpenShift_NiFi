@@ -31,10 +31,10 @@ ENV NIFI_TOOLKIT_HOME ${NIFI_BASE_DIR}/nifi-toolkit-current
 ENV NIFI_PID_DIR=${NIFI_HOME}/run
 ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
-# USER root
 
 # Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
+USER root
 RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
 
 # Setup NiFi user and create necessary directories
@@ -48,6 +48,7 @@ RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -
 
 # OpenSHift UPDATE: Do not run as nifi
 #USER nifi
+USER ${UID}
 
 # Download, validate, and expand Apache NiFi Toolkit binary.
 RUN curl -fSL ${MIRROR_BASE_URL}/${NIFI_TOOLKIT_BINARY_PATH} -o ${NIFI_BASE_DIR}/nifi-toolkit-${NIFI_VERSION}-bin.zip \
@@ -96,8 +97,6 @@ RUN chgrp -R 0 ${NIFI_BASE_DIR} \
 EXPOSE 8080 8443 10000 8000
 
 WORKDIR ${NIFI_HOME}
-
-USER ${UID}
 
 # Apply configuration and start NiFi
 #
