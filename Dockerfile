@@ -107,8 +107,8 @@ WORKDIR ${NIFI_HOME}
 
 # OpenSHift UPDATE: make new DIR 'nifi-temp' and copy over conf
 # This is due to how the OpenShift Persistent Volume works
-RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
-RUN chmod -R a+rwx nifi-temp/conf
+# RUN mkdir nifi-temp && cp -a conf nifi-temp/conf
+# RUN chmod -R a+rwx nifi-temp/conf
 
 # kick off the custom start script
 ENTRYPOINT ["sh", "../scripts/start-openshift-nifi.sh"]
