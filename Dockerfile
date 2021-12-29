@@ -35,9 +35,7 @@ ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
 
 # Install scripts and deps
 ADD sh/ ${NIFI_BASE_DIR}/scripts/
-RUN microdnf update \
-    && microdnf install -y jq procps \
-    && chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
+RUN chmod -R +x ${NIFI_BASE_DIR}/scripts/*.sh 
 
 # Setup NiFi user and create necessary directories
 RUN groupadd -g ${GID} nifi || groupmod -n nifi `getent group ${GID} | cut -d: -f1` \
